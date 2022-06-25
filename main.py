@@ -36,9 +36,8 @@ def get(update, context):
     r = requests.get("https://anekdoty.net.ua/category/anekdoty")
     tree = html.fromstring(r.content)
     a = tree.xpath('.//div[@ class="entry-summary entry-sub-title"]//text()')
-    while a > 0:
-        update.message.reply_text(a[1])
-        a += 1
+    update.message.reply_text(a[1])
+
 
 
 def echo(update, context):
