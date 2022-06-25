@@ -38,7 +38,7 @@ def get(update, context):
     a = tree.xpath('.//div[@ class="entry-summary entry-sub-title"]//text()')
     if a:
         update.message.reply_text(a[1])
-    update.message.reply_text('adjkasdks')
+    update.message.reply_text('55555')
 
 
 
