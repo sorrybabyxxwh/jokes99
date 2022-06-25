@@ -5,11 +5,14 @@ Source: https://github.com/python-telegram-bot/python-telegram-bot/blob/master/e
 
 import logging
 import os
+import random
 
+from bs4 import BeautifulSoup as bs
 import requests
 from lxml import html
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
+URL = 'https://anekdoty.net.ua/category/anekdoty'
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -31,24 +34,19 @@ def help(update, context):
     update.message.reply_text('Help!')
 
 
-def get(update, context):
+def get(update, list_of_jokes):
     """Send a message when the command /help is issued."""
-    r = requests.get("https://anekdoty.net.ua/category/anekdoty")
-    tree = html.fromstring(r.content)
-    a = tree.xpath('.//div[@ class="entry-summary entry-sub-title"]//text()')
-    if a:
-        update.message.reply_text(a[1])
-    update.message.reply_text('55555')
+    update.message.reply_text(list_of_jokes[0])
 
-def a(update, context):
+def a(URL):
     """Send a message when the command /help is issued."""
-    r = requests.get("https://anekdoty.net.ua/category/anekdoty")
-    tree = html.fromstring(r.content)
-    a = tree.xpath('.//div[@ class="entry-summary entry-sub-title"]//text()')
-    if a:
-        update.message.reply_text(a[1])
-    update.message.reply_text('55555')
+    r = requests.get(URL)
+    soup = bs(r.text, 'html.parser')
+    anek = soup.find_all('blockquote', class_="wp-block-quote")
+    return [c.text for c in anek]
 
+list_of_jokes = a(URL)
+random.shuffle(list_of_jokes)
 
 def echo(update, context):
     """Echo the user message."""
