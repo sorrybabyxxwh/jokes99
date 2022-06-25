@@ -40,6 +40,14 @@ def get(update, context):
         update.message.reply_text(a[1])
     update.message.reply_text('55555')
 
+def a(update, context):
+    """Send a message when the command /help is issued."""
+    r = requests.get("https://anekdoty.net.ua/category/anekdoty")
+    tree = html.fromstring(r.content)
+    a = tree.xpath('.//div[@ class="entry-summary entry-sub-title"]//text()')
+    if a:
+        update.message.reply_text(a[1])
+    update.message.reply_text('55555')
 
 
 def echo(update, context):
@@ -66,6 +74,7 @@ def main():
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("get", get))
+    dp.add_handler(CommandHandler("a", get))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
